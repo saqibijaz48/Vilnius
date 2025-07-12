@@ -2,12 +2,27 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 import { brandOptionsMap, categoryOptionsMap } from "@/config";
 import { Badge } from "../ui/badge";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function ShoppingProductTile({
   product,
   handleGetProductDetails,
   handleAddtoCart,
 }) {
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  function handleAddToCartClick() {
+    if (!isAuthenticated) {
+      // Store current page for redirect after login
+      sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
+      navigate("/auth/login");
+      return;
+    }
+    handleAddtoCart(product?._id, product?.totalStock);
+  }
+
   return (
     <Card className="w-full max-w-sm mx-auto">
       <div onClick={() => handleGetProductDetails(product?._id)}>
@@ -63,10 +78,7 @@ function ShoppingProductTile({
             Out Of Stock
           </Button>
         ) : (
-          <Button
-            onClick={() => handleAddtoCart(product?._id, product?.totalStock)}
-            className="w-full"
-          >
+          <Button onClick={handleAddToCartClick} className="w-full">
             Add to cart
           </Button>
         )}

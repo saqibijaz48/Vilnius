@@ -10,4 +10,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    // This ensures that refreshing or direct links work with React Router
+    historyApiFallback: true,
+  },
 });

@@ -5,6 +5,8 @@ import { registerUser } from "@/store/auth-slice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/utils/translations";
 
 const initialState = {
   userName: "",
@@ -17,6 +19,7 @@ function AuthRegister() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { language } = useLanguage();
 
   function onSubmit(event) {
     event.preventDefault();
@@ -41,21 +44,21 @@ function AuthRegister() {
     <div className="mx-auto w-full max-w-md space-y-6">
       <div className="text-center">
         <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Create new account
+          {t('createNewAccount', language)}
         </h1>
         <p className="mt-2">
-          Already have an account
+          {t('alreadyHaveAccount', language)}
           <Link
             className="font-medium ml-2 text-primary hover:underline"
             to="/auth/login"
           >
-            Login
+            {t('login', language)}
           </Link>
         </p>
       </div>
       <CommonForm
         formControls={registerFormControls}
-        buttonText={"Sign Up"}
+        buttonText={t('signUp', language)}
         formData={formData}
         setFormData={setFormData}
         onSubmit={onSubmit}

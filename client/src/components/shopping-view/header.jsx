@@ -1,4 +1,5 @@
 import { HousePlug, LogOut, Menu, ShoppingCart, UserCog, User } from "lucide-react";
+import { Globe } from "lucide-react";
 import {
   Link,
   useLocation,
@@ -23,11 +24,14 @@ import UserCartWrapper from "./cart-wrapper";
 import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/store/shop/cart-slice";
 import { Label } from "../ui/label";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/utils/translations";
 
 function MenuItems() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { language } = useLanguage();
 
   function handleNavigate(getCurrentMenuItem) {
     sessionStorage.removeItem("filters");
@@ -57,7 +61,7 @@ function MenuItems() {
           className="text-sm font-medium cursor-pointer"
           key={menuItem.id}
         >
-          {menuItem.label}
+          {t(menuItem.id, language)}
         </Label>
       ))}
     </nav>
@@ -70,6 +74,7 @@ function HeaderRightContent() {
   const [openCartSheet, setOpenCartSheet] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { language } = useLanguage();
 
   function handleLogout() {
     dispatch(logoutUser());
@@ -130,16 +135,16 @@ function HeaderRightContent() {
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="right" className="w-56">
-            <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
+            <DropdownMenuLabel>{t('loggedInAs', language)} {user?.userName}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => navigate("/shop/account")}>
               <UserCog className="mr-2 h-4 w-4" />
-              Account
+              {t('account', language)}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="mr-2 h-4 w-4" />
-              Logout
+              {t('logout', language)}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -150,20 +155,51 @@ function HeaderRightContent() {
           className="flex items-center gap-2"
         >
           <User className="w-4 h-4" />
-          Login
+          {t('login', language)}
         </Button>
       )}
     </div>
   );
 }
 
+function LanguageSwitcher() {
+  const { language, changeLanguage } = useLanguage();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon" className="relative">
+          <Globe className="w-4 h-4" />
+          <span className="sr-only">Change language</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent side="bottom" className="w-32">
+        <DropdownMenuItem 
+          onClick={() => changeLanguage('en')}
+          className={language === 'en' ? 'bg-accent' : ''}
+        >
+          🇺🇸 English
+        </DropdownMenuItem>
+        <DropdownMenuItem 
+          onClick={() => changeLanguage('lt')}
+          className={language === 'lt' ? 'bg-accent' : ''}
+        >
+          🇱🇹 Lietuvių
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 function ShoppingHeader() {
+  const { language } = useLanguage();
+
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <Link to="/shop/home" className="flex items-center gap-2">
           <HousePlug className="h-6 w-6" />
-          <span className="font-bold">Ecommerce</span>
+          <span className="font-bold">{t('ecommerce', language)}</span>
         </Link>
         <Sheet>
           <SheetTrigger asChild>
@@ -174,6 +210,9 @@ function ShoppingHeader() {
           </SheetTrigger>
           <SheetContent side="left" className="w-full max-w-xs">
             <MenuItems />
+            <div className="mt-4">
+              <LanguageSwitcher />
+            </div>
             <HeaderRightContent />
           </SheetContent>
         </Sheet>
@@ -181,7 +220,8 @@ function ShoppingHeader() {
           <MenuItems />
         </div>
 
-        <div className="hidden lg:block">
+        <div className="hidden lg:flex lg:items-center lg:gap-4">
+          <LanguageSwitcher />
           <HeaderRightContent />
         </div>
       </div>

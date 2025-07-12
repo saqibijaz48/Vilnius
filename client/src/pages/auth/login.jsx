@@ -5,6 +5,8 @@ import { loginUser } from "@/store/auth-slice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/utils/translations";
 
 const initialState = {
   email: "",
@@ -15,6 +17,7 @@ function AuthLogin() {
   const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
   const { toast } = useToast();
+  const { language } = useLanguage();
 
   function onSubmit(event) {
     event.preventDefault();
@@ -37,21 +40,21 @@ function AuthLogin() {
     <div className="mx-auto w-full max-w-md space-y-6">
       <div className="text-center">
         <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Sign in to your account
+          {t('signInToAccount', language)}
         </h1>
         <p className="mt-2">
-          Don't have an account
+          {t('dontHaveAccount', language)}
           <Link
             className="font-medium ml-2 text-primary hover:underline"
             to="/auth/register"
           >
-            Register
+            {t('register', language)}
           </Link>
         </p>
       </div>
       <CommonForm
         formControls={loginFormControls}
-        buttonText={"Sign In"}
+        buttonText={t('signIn', language)}
         formData={formData}
         setFormData={setFormData}
         onSubmit={onSubmit}

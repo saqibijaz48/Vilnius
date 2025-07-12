@@ -4,6 +4,8 @@ import { brandOptionsMap, categoryOptionsMap } from "@/config";
 import { Badge } from "../ui/badge";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/utils/translations";
 
 function ShoppingProductTile({
   product,
@@ -12,6 +14,7 @@ function ShoppingProductTile({
 }) {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const { language } = useLanguage();
 
   function handleAddToCartClick() {
     if (!isAuthenticated) {
@@ -34,15 +37,15 @@ function ShoppingProductTile({
           />
           {product?.totalStock === 0 ? (
             <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
-              Out Of Stock
+              {t('outOfStock', language)}
             </Badge>
           ) : product?.totalStock < 10 ? (
             <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
-              {`Only ${product?.totalStock} items left`}
+              {t('onlyItemsLeft', language, { count: product?.totalStock })}
             </Badge>
           ) : product?.salePrice > 0 ? (
             <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
-              Sale
+              {t('sale', language)}
             </Badge>
           ) : null}
         </div>
@@ -75,11 +78,11 @@ function ShoppingProductTile({
       <CardFooter>
         {product?.totalStock === 0 ? (
           <Button className="w-full opacity-60 cursor-not-allowed">
-            Out Of Stock
+            {t('outOfStock', language)}
           </Button>
         ) : (
           <Button onClick={handleAddToCartClick} className="w-full">
-            Add to cart
+            {t('addToCart', language)}
           </Button>
         )}
       </CardFooter>

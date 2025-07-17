@@ -22,8 +22,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://vilnius-eta.vercel.app/", // Replace with your actual Vercel domain
-      "https://comfy-meerkat-453434.netlify.app/"
+      "https://vilnius-eta.vercel.app/" // Replace with your actual Vercel domain
     ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
@@ -64,4 +63,8 @@ app.use("/api/shop/review", shopReviewRouter);
 app.use("/api/common/feature", commonFeatureRouter);
 
 // Start server
+app.get("/", (req, res) => {
+  res.send("Vilnius backend is working!");
+});
+  
 app.listen(PORT, () => console.log(`🚀 Server is running on port ${PORT}`));

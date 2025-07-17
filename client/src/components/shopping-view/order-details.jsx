@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Badge } from "../ui/badge";
-import { DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { DialogHeader, DialogTitle } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 
@@ -8,7 +8,7 @@ function ShoppingOrderDetailsView({ orderDetails }) {
   const { user } = useSelector((state) => state.auth);
 
   return (
-    <DialogContent className="sm:max-w-[600px]">
+    <>
       <DialogHeader>
         <DialogTitle>Order Details</DialogTitle>
       </DialogHeader>
@@ -82,7 +82,7 @@ function ShoppingOrderDetailsView({ orderDetails }) {
           </div>
         </div>
       </div>
-    </DialogContent>
+    </>
   );
 }
 

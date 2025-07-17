@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CommonForm from "../common/form";
-import { DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { DialogHeader, DialogTitle } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
@@ -43,7 +43,7 @@ function AdminOrderDetailsView({ orderDetails }) {
   }
 
   return (
-    <DialogContent className="sm:max-w-[600px]">
+    <>
       <DialogHeader>
         <DialogTitle>Order Details</DialogTitle>
       </DialogHeader>
@@ -140,7 +140,7 @@ function AdminOrderDetailsView({ orderDetails }) {
           />
         </div>
       </div>
-    </DialogContent>
+    </>
   );
 }
 

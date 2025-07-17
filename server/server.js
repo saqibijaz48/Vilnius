@@ -22,7 +22,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://vilnius-eta.vercel.app/" // Replace with your actual Vercel domain
+      "https://vilnius-s814.vercel.app/" // Replace with your actual Vercel domain
     ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
@@ -66,5 +66,5 @@ app.use("/api/common/feature", commonFeatureRouter);
 app.get("/", (req, res) => {
   res.send("Vilnius backend is working!");
 });
-  
+
 app.listen(PORT, () => console.log(`🚀 Server is running on port ${PORT}`));

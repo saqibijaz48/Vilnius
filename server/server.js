@@ -22,7 +22,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://comfy-meerkat-453434.netlify.app/"
+      "https://comfy-meerkat-453434.netlify.app"
     ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [

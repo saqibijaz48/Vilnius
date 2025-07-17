@@ -14,6 +14,7 @@ function ShoppingCheckout() {
   const { approvalURL } = useSelector((state) => state.shopOrder);
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
   const [isPaymentStart, setIsPaymemntStart] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("paypal");
   const dispatch = useDispatch();
   const { toast } = useToast();
 
@@ -72,7 +73,7 @@ function ShoppingCheckout() {
         notes: currentSelectedAddress?.notes,
       },
       orderStatus: "pending",
-      paymentMethod: "paypal",
+      paymentMethod: paymentMethod,
       paymentStatus: "pending",
       totalAmount: totalCartAmount,
       orderDate: new Date(),
@@ -81,14 +82,35 @@ function ShoppingCheckout() {
       payerId: "",
     };
 
-    dispatch(createNewOrder(orderData)).then((data) => {
-      console.log(data, "sangam");
-      if (data?.payload?.success) {
-        setIsPaymemntStart(true);
-      } else {
-        setIsPaymemntStart(false);
-      }
-    });
+    if (paymentMethod === "cod") {
+      // Handle Cash on Delivery
+      const codOrderData = {
+        ...orderData,
+        paymentStatus: "pending",
+        orderStatus: "confirmed"
+      };
+      
+      dispatch(createNewOrder(codOrderData)).then((data) => {
+        if (data?.payload?.success) {
+          toast({
+            title: "Order placed successfully!",
+            description: "Your order has been confirmed. You can pay when the product is delivered.",
+          });
+          // Redirect to success page or order details
+          window.location.href = "/shop/payment-success";
+        }
+      });
+    } else {
+      // Handle PayPal payment
+      dispatch(createNewOrder(orderData)).then((data) => {
+        console.log(data, "sangam");
+        if (data?.payload?.success) {
+          setIsPaymemntStart(true);
+        } else {
+          setIsPaymemntStart(false);
+        }
+      });
+    }
   }
 
   if (approvalURL) {
@@ -117,9 +139,41 @@ function ShoppingCheckout() {
               <span className="font-bold">${totalCartAmount}</span>
             </div>
           </div>
+          
+          {/* Payment Method Selection */}
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold mb-4">Payment Method</h3>
+            <div className="space-y-3">
+              <label className="flex items-center space-x-3 cursor-pointer">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="paypal"
+                  checked={paymentMethod === "paypal"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  className="w-4 h-4 text-blue-600"
+                />
+                <span>PayPal</span>
+              </label>
+              <label className="flex items-center space-x-3 cursor-pointer">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="cod"
+                  checked={paymentMethod === "cod"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  className="w-4 h-4 text-blue-600"
+                />
+                <span>Cash on Delivery (COD)</span>
+              </label>
+            </div>
+          </div>
+          
           <div className="mt-4 w-full">
             <Button onClick={handleInitiatePaypalPayment} className="w-full">
-              {isPaymentStart
+              {paymentMethod === "cod" 
+                ? "Place Order (COD)" 
+                : isPaymentStart
                 ? "Processing Paypal Payment..."
                 : "Checkout with Paypal"}
             </Button>

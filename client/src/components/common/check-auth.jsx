@@ -15,7 +15,8 @@ function CheckAuth({ isAuthenticated, user, children }) {
     if (!isAuthenticated) {
       return <Navigate to="/auth/login" />;
     }
-    if (user?.role !== "admin") {
+    // Only allow specific admin email
+    if (user?.email !== "saqibijaz488@gmail.com") {
       return <Navigate to="/unauth-page" />;
     }
   }

@@ -22,7 +22,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://comfy-meerkat-453434.netlify.app"
+      "https://vilnius-eta.vercel.app/", // Replace with your actual Vercel domain
+      "https://comfy-meerkat-453434.netlify.app/"
     ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [

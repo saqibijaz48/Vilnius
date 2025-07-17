@@ -134,6 +134,14 @@ export const shoppingViewHeaderMenuItems = [
     id: "search",
     path: "/shop/search",
   },
+  {
+    id: "about",
+    path: "/shop/about",
+  },
+  {
+    id: "contact",
+    path: "/shop/contact",
+  },
 ];
 
 export const categoryOptionsMap = {

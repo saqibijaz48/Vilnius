@@ -1,3 +1,4 @@
+// PayPal is currently disabled
 // const paypal = require("paypal-rest-sdk");
 
 // paypal.configure({
@@ -6,4 +7,11 @@
 //   client_secret: process.env.PAYPAL_CLIENT_SECRET || "",
 // });
 
-// module.exports = paypal;
+// Dummy paypal object for when PayPal is disabled
+const paypal = {
+  payment: {
+    create: () => {}
+  }
+};
+
+module.exports = paypal;

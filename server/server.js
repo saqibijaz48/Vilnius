@@ -9,7 +9,7 @@ dotenv.config();
 
 // Create Express app
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // MongoDB connection
 mongoose
@@ -22,7 +22,9 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://vilnius-s814.vercel.app/" // Replace with your actual Vercel domain
+      "http://localhost:3000",
+      "https://vilnius-s814.vercel.app",
+      "https://vilnius-production-82c5.up.railway.app"
     ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
@@ -64,7 +66,21 @@ app.use("/api/common/feature", commonFeatureRouter);
 
 // Start server
 app.get("/", (req, res) => {
-  res.send("Vilnius backend is working!");
+  res.json({
+    message: "Vilnius backend is working!",
+    status: "success",
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      auth: "/api/auth",
+      products: "/api/shop/products",
+      cart: "/api/shop/cart",
+      orders: "/api/shop/order"
+    }
+  });
 });
 
-app.listen(PORT, () => console.log(`🚀 Server is running on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
+  console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🌐 CORS origins configured`);
+});

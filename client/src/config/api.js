@@ -1,6 +1,8 @@
-// API configuration for different environments
-const API_BASE_URL = import.meta.env.PROD 
-  ? 'https://vilnius-production-82c5.up.railway.app' // Your Railway backend URL
-  : 'http://localhost:5000';
+// Supabase configuration
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'your-supabase-url'
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || 'your-supabase-anon-key'
 
-export { API_BASE_URL };
+// API configuration for Supabase Edge Functions
+const API_BASE_URL = `${SUPABASE_URL}/functions/v1`
+
+export { API_BASE_URL, SUPABASE_URL, SUPABASE_ANON_KEY };
